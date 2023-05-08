@@ -1,0 +1,56 @@
+---
+title: "VisualistaionPractice"
+author: "Olivia Crawley"
+date: "2023-05-08"
+output: html_document
+---
+
+
+```{r}
+install.packages("lubridate")
+install.packages("scales")
+
+library(ggplot2)
+```
+```{r}
+setwd("/Users/oliviacrawley/Desktop/github/MB5370/Data")
+read.csv(header = TRUE, "NestingData.csv")
+
+nestingData = read.csv(header = TRUE, "NestingData.csv")
+```
+
+
+
+
+```{r}
+# Create own colour palette
+Tanz <- c("#F37735", "#00B159", "#0000FF", "#000000", "#33CCCC")
+
+
+# Create a vector with the correct order of months
+month_order <- c("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec")
+
+# Use the factor function to set the levels of the "month" variable in the desired order
+nestingData$Month <- factor(nestingData$Month, levels = month_order)
+
+
+# Plot the data with ggplot
+ggplot(data = nestingData, mapping = aes(x = Month, y = Nest, group = Location, colour = Location)) +
+  geom_line() +
+   geom_point(size = 0.9) +
+  labs(title = "Seasonal distribution of Green Sea Turtle nesting sites around Tanzania",
+       subtitle = "Redesigned by Olivia and Courtney",
+       y = "Number of Nests",
+       x = "Month") +
+  theme_grey() +
+  scale_color_brewer(palette = "Spectral") +
+  scale_x_discrete(limits = month_order) +
+  scale_color_manual(values = Tanz) +
+  scale_y_continuous(breaks=seq(0,50,by=5))
+                      
+              
+
+
+
+```
+

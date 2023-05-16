@@ -1,0 +1,90 @@
+---
+title: "Sharkdata"
+author: "Olivia Crawley"
+date: "2023-05-10"
+output: html_document
+---
+
+#### QFISH Analysis ####
+
+Here we input our selected data from QFISH using the read.csv function and call the appropriate packages in R.
+
+```{r}
+setwd("/Users/oliviacrawley/Desktop/github/MB5370/Data") #Sets working directory
+
+QFISHdata = read.csv(header = TRUE, "QFISH.csv" )
+```
+
+```{r}
+library(ggplot2)
+library(tidyverse) #Loading the necessary packages
+
+```
+
+```{r}
+install.packages("jpeg")
+install.packages("patchwork")
+library(jpeg)
+library(patchwork)
+```
+
+
+
+#### Ordering the Data ####
+
+```{r}
+
+
+year_order <- c("2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023")
+
+regions_order <- c("Far North Queensland", "North Queensland", "Central Queensland", "South Queensland (North Coast)", "South Queensland (South East Coast)")
+
+QFISHdata$Year <- factor(QFISHdata$Year, levels = year_order) #Ordering the years in the correct order
+
+QFISHdata$Region <- factor(QFISHdata$Region, levels = regions_order) #Ordering the regions in the correct order
+
+```
+
+## Plotting ##
+
+```{r}
+#Create our own colour palette
+QLD <- c("#0085A3", "#8ED300", "#FF9B56", "#A30002", "#7F01D3")
+
+#Plotting our graph with ggplot
+graph = ggplot(data = QFISHdata, mapping = aes(x = Year, y = Total.Catch , group = Region, colour = Region)) +
+  geom_line() +
+   geom_point(size = 0.5) +
+   labs(title = "Queensland Shark Catch between 2013 and 2023",
+       caption = "\nData collected from QFish",
+       y = "Total Catch (n)\n",
+       x = "\nYear") + 
+  theme(legend.position="right",legend.justification="top") +
+  theme(plot.caption.position = "plot") +
+   scale_x_discrete(limits = year_order) +
+  scale_color_manual(values = QLD) +
+  scale_y_continuous(breaks=seq(0,300,by=25), expand = c(0, 0), limits = c(0, 300)) +
+  theme(panel.background = element_rect("white"),panel.grid.major = element_line("#f2f2f2"), panel.grid.minor = element_line("#f6f6f6")) 
+
+print(graph)
+```
+
+```{r}
+
+### Inserting map image
+
+path <- "/Users/oliviacrawley/Desktop/github/MB5370/Figs/IMG_1969.jpg"
+img <- readJPEG(path, native = TRUE)
+img_graph <- graph +                  
+  inset_element(p = img,
+                left = 1.1,
+                bottom = 0.5,
+                right = 1.6,
+                top = 0.95)
+
+print (img_graph)
+
+```
+
+
+

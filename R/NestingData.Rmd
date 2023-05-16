@@ -24,7 +24,7 @@ nestingData = read.csv(header = TRUE, "NestingData.csv")
 
 ```{r}
 # Create own colour palette
-Tanz <- c("#F37735", "#00B159", "#0000FF", "#000000", "#33CCCC")
+Tanz <- c("#FFC425", "#00B159", "#0000FF", "#000000", "#33CCCC")
 
 
 # Create a vector with the correct order of months
@@ -33,20 +33,21 @@ month_order <- c("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept
 # Use the factor function to set the levels of the "month" variable in the desired order
 nestingData$Month <- factor(nestingData$Month, levels = month_order)
 
-
+my_theme <- theme(plot.subtitle = element_text(hjust = 0.5))
 # Plot the data with ggplot
 ggplot(data = nestingData, mapping = aes(x = Month, y = Nest, group = Location, colour = Location)) +
   geom_line() +
    geom_point(size = 0.9) +
   labs(title = "Seasonal distribution of Green Sea Turtle nesting sites around Tanzania",
        subtitle = "Redesigned by Olivia and Courtney",
-       y = "Number of Nests",
-       x = "Month") +
-  theme_grey() +
+       y = "Number of Nests\n",
+       x = "\nMonth") +
+ theme(panel.background = element_rect("white"),panel.grid.major = element_line("#f2f2f2"), panel.grid.minor = element_line("#f6f6f6"))  +
   scale_color_brewer(palette = "Spectral") +
   scale_x_discrete(limits = month_order) +
   scale_color_manual(values = Tanz) +
-  scale_y_continuous(breaks=seq(0,50,by=5))
+  scale_y_continuous(breaks=seq(0,50,by=5)) +
+  my_theme
                       
               
 

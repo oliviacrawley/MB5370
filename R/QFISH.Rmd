@@ -21,6 +21,8 @@ library(tidyverse) #Loading the necessary packages
 
 ```
 
+#### Installing appropriate packages ####
+
 ```{r}
 install.packages("jpeg")
 install.packages("patchwork")
